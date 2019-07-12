@@ -102,6 +102,37 @@ def hogwarts_by_house(filename):
     ghosts = []
     instructors = []
 
+
+    openfile = open(filename)
+    for i in openfile:
+        line = i.rstrip()
+        words = line.split('|')
+        last_name = words[1]
+
+
+        if words[2] == 'Gryffindor':
+            gryffindor.append(last_name)
+        elif words[2] == 'Hufflepuff':
+            hufflepuff.append(last_name)
+        elif words[2] == 'Ravenclaw':
+            ravenclaw.append(last_name)
+        elif words[2] == 'Slytherin':
+            slytherin.append(last_name)
+        elif words[2] == "Dumbledore's Army":
+            dumbledores_army.append(last_name)
+        elif words[4] == 'G':
+            ghosts.append(last_name)
+        elif words[4] == 'I':
+            instructors.append(last_name)
+
+
+    all_hogwarts = [dumbledores_army, gryffindor, hufflepuff, ravenclaw, slytherin, ghosts, instructors]
+
+    for item in all_hogwarts:
+        item.sort()
+
+    openfile.close()
+
     # Code goes here
 
     return all_hogwarts
@@ -121,8 +152,24 @@ def all_students_tuple_list(filename):
     """
 
     student_list = []
+    
+    openfile = open(filename)
+    for i in openfile:
+        line = i.rstrip()
+        words = line.split('|')
 
-    # Code goes here
+        last_name = words[1]
+        first_name = words[0]
+
+        full_name = f"{first_name} {last_name}"
+        house = words[2]
+        advisor = words[3]
+        cohort = words[4]
+
+        if cohort == 'G' or cohort == 'I':
+            continue
+
+        student_list.append((full_name, house, advisor, cohort))
 
     return student_list
 
@@ -146,10 +193,20 @@ def find_cohort_by_student_name(student_list):
     'Student not found.'
 
     """
+    while True:
 
-    # Code goes here
+        student = input("Who are you looking for?: ")
 
-    return "Student not found."
+        for tupl in student_list:
+            if student.capitalize() == tupl[0]:
+                student_name = tupl[0]
+                cohort = tupl[3]
+                return f"{student_name} was in the {cohort} cohort."
+
+
+        return 'Student not found.'
+
+
 
 
 ##########################################################################################
@@ -209,7 +266,7 @@ def find_house_members_by_student_name(student_list):
 #############################################################################
 # Here is some useful code to run these functions without doctests!
 
-# find_cohort_by_student_name(all_students_data)
+find_cohort_by_student_name(student_list)
 # find_house_members_by_student_name(all_students_data)
 
 
